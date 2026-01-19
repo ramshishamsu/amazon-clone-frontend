@@ -28,17 +28,17 @@ const ProductCard = ({ product }) => {
         <img
           src={product.images[0]}
           alt={product.name}
-          className="w-full h-48 object-cover rounded-t-lg"
+          className="w-full h-48 sm:h-56 object-cover rounded-t-lg"
         />
       </Link>
 
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         <span className="text-xs text-gray-500">
           {product.category}
         </span>
 
         <Link to={`/product/${product._id}`}>
-          <h3 className="font-semibold mt-1 hover:text-blue-600">
+          <h3 className="font-semibold mt-1 hover:text-blue-600 text-sm sm:text-base">
             {product.name}
           </h3>
         </Link>
@@ -47,13 +47,13 @@ const ProductCard = ({ product }) => {
           {renderStars(product.rating)}
         </div>
 
-        <p className="text-xl font-bold mt-1">
+        <p className="text-lg sm:text-xl font-bold mt-1">
           ₹{product.price}
         </p>
 
         <button
           onClick={handleAddToCart}
-          className="amazon-btn w-full mt-3"
+          className="amazon-btn w-full mt-3 text-sm sm:text-base"
         >
           Add to Cart
         </button>

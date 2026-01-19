@@ -78,43 +78,66 @@ const Cart = () => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
+    <div className="p-4 md:p-6 max-w-4xl mx-auto">
+      <h1 className="text-xl md:text-2xl font-bold mb-6">
+        Shopping Cart
+      </h1>
 
       {cart.items.map((item) => (
         <div
           key={item.productId._id}
-          className="flex justify-between items-center border-b py-4"
+          className="flex flex-col md:flex-row justify-between items-start md:items-center border-b py-4 gap-4"
         >
-          <div>
-            <h2 className="font-semibold text-sm">
+          {/* Product Info */}
+          <div className="flex-1">
+            <h2 className="font-semibold text-sm md:text-base">
               {item.productId.name}
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm md:text-base">
               ₹{item.productId.price}
             </p>
           </div>
 
+          {/* Quantity Controls */}
           <div className="flex items-center gap-3">
-            <button onClick={() => decreaseQty(item.productId._id)}>–</button>
-            <span>{item.quantity}</span>
-            <button onClick={() => increaseQty(item.productId._id)}>+</button>
+            <button
+              onClick={() => decreaseQty(item.productId._id)}
+              className="px-3 py-1 border rounded hover:bg-gray-100 transition text-sm md:text-base"
+            >
+              –
+            </button>
+
+            <span className="font-semibold text-sm md:text-base">
+              {item.quantity}
+            </span>
+
+            <button
+              onClick={() => increaseQty(item.productId._id)}
+              className="px-3 py-1 border rounded hover:bg-gray-100 transition text-sm md:text-base"
+            >
+              +
+            </button>
           </div>
 
+          {/* Remove */}
           <button
             onClick={() => removeItem(item.productId._id)}
-            className="text-red-600"
+            className="text-red-600 text-sm hover:underline"
           >
             Remove
           </button>
         </div>
       ))}
 
-      <div className="flex justify-between mt-6">
-        <h2 className="text-xl font-bold">Subtotal: ₹{totalPrice}</h2>
+      {/* Footer */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-6 gap-4">
+        <h2 className="text-xl font-bold">
+          Subtotal: ₹{totalPrice}
+        </h2>
+
         <button
           onClick={() => navigate("/checkout")}
-          className="amazon-btn"
+          className="amazon-btn w-full md:w-auto"
         >
           Proceed to Checkout
         </button>

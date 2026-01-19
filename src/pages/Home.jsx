@@ -61,51 +61,52 @@ const Home = () => {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-6 p-6">
+    <div className="p-4 md:p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
 
-      {/* LEFT – FILTERS */}
-      <div className="col-span-1 border p-4 rounded-lg shadow-sm">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg">Filters</h2>
-          <button
-            onClick={clearFilters}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Clear all
-          </button>
-        </div>
+        {/* LEFT – FILTERS */}
+        <div className="lg:col-span-1 border p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-bold text-lg">Filters</h2>
+            <button
+              onClick={clearFilters}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Clear all
+            </button>
+          </div>
 
-        {/* SEARCH */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
-            Search
-          </label>
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="border p-2 w-full rounded"
-            value={search}
-            onChange={(e) => updateParam("search", e.target.value)}
-          />
-        </div>
+          {/* SEARCH */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">
+              Search
+            </label>
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="border p-2 w-full rounded text-sm"
+              value={search}
+              onChange={(e) => updateParam("search", e.target.value)}
+            />
+          </div>
 
-        {/* CATEGORY */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
-            Category
-          </label>
-          <select
-            className="border p-2 w-full rounded"
-            value={category}
-            onChange={(e) => updateParam("category", e.target.value)}
-          >
-            <option value="">All Categories</option>
-            <option value="mobiles">Mobiles</option>
-            <option value="laptops">Laptops</option>
-            <option value="electronics">Electronics</option>
-            <option value="wearables">Wearables</option>
-          </select>
-        </div>
+          {/* CATEGORY */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">
+              Category
+            </label>
+            <select
+              className="border p-2 w-full rounded text-sm"
+              value={category}
+              onChange={(e) => updateParam("category", e.target.value)}
+            >
+              <option value="">All Categories</option>
+              <option value="mobiles">Mobiles</option>
+              <option value="laptops">Laptops</option>
+              <option value="electronics">Electronics</option>
+              <option value="wearables">Wearables</option>
+            </select>
+          </div>
 
         {/* PRICE RANGE */}
         <div className="mb-6">
@@ -115,14 +116,14 @@ const Home = () => {
           <input
             type="number"
             placeholder="Min Price"
-            className="border p-2 w-full rounded mb-2"
+            className="border p-2 w-full rounded mb-2 text-sm"
             value={minPrice}
             onChange={(e) => updateParam("minPrice", e.target.value)}
           />
           <input
             type="number"
             placeholder="Max Price"
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded text-sm"
             value={maxPrice}
             onChange={(e) => updateParam("maxPrice", e.target.value)}
           />
@@ -134,7 +135,7 @@ const Home = () => {
             Minimum Rating
           </label>
           <select
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded text-sm"
             value={rating}
             onChange={(e) => updateParam("rating", e.target.value)}
           >
@@ -151,7 +152,7 @@ const Home = () => {
       </div>
 
       {/* RIGHT – PRODUCTS */}
-      <div className="col-span-3">
+      <div className="lg:col-span-3">
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
@@ -169,7 +170,7 @@ const Home = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {products.map((product) => (
               <ProductCard
                 key={product._id}
@@ -181,6 +182,7 @@ const Home = () => {
       </div>
 
     </div>
+  </div>
   );
 };
 
