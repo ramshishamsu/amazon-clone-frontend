@@ -6,7 +6,6 @@ import "./index.css";
 import AuthProvider from "./context/AuthContext";
 import CartProvider from "./context/CartContext";
 import Navbar from "./components/Navbar";
-import FirebaseToggle from "./components/FirebaseToggle";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -14,7 +13,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <CartProvider>
         <Navbar />
         <App />
-        <FirebaseToggle />
       </CartProvider>
     </AuthProvider>
   </BrowserRouter>
