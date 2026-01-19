@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { isLoggedIn } from "../utils/auth";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    
+    if (!isLoggedIn()) {
+      navigate("/login", {
+        state: { redirectTo: `/product/${product._id}` }
+      });
+      return;
+    }
+    
     addToCart(product._id);
   };
 
