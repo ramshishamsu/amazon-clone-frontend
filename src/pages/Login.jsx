@@ -24,7 +24,17 @@ const Login = () => {
 
       navigate(redirectTo); // ✅ FIX
     } catch (error) {
-      alert(error.message || "Login failed");
+      // Check if it's "Account not found" error
+      if (error.message?.includes("Account not found") || 
+          error.response?.data?.message?.includes("Account not found") ||
+          error.response?.status === 404) {
+        alert("Account not found. Please create an account.");
+        navigate("/signup", { 
+          state: { email, redirectTo } 
+        });
+      } else {
+        alert(error.message || "Login failed");
+      }
     }
   };
 

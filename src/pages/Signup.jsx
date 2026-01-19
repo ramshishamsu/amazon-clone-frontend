@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
 import { signupApi, googleAuthApi } from "../api/authApi";
@@ -12,6 +12,18 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const location = useLocation();
+
+  // Get email and redirect from login state if coming from login
+  const loginState = location.state;
+  const redirectTo = loginState?.redirectTo || "/";
+
+  useEffect(() => {
+    // Pre-fill email if coming from login
+    if (loginState?.email) {
+      setEmail(loginState.email);
+    }
+  }, [loginState]);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -24,7 +36,9 @@ const Signup = () => {
       });
 
       alert("Signup successful. Please login.");
-      navigate("/login");
+      navigate("/login", { 
+        state: { redirectTo } 
+      });
     } catch (error) {
       alert(error.message || "Signup failed");
     }
