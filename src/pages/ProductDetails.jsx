@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductByIdApi } from "../api/productApi";
 import { useCart } from "../context/CartContext";
+import { isLoggedIn } from "../utils/auth";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -16,6 +17,32 @@ const ProductDetails = () => {
   }, [id]);
 
   if (!product) return null;
+
+  // ✅ ADD TO CART HANDLER
+  const handleAddToCart = async () => {
+    if (!isLoggedIn()) {
+      navigate("/login", {
+        state: { redirectTo: `/product/${id}` }
+      });
+      return;
+    }
+
+    await addToCart(product._id, quantity);
+    navigate("/cart"); // Amazon shows cart confirmation
+  };
+
+  // ✅ BUY NOW HANDLER
+  const handleBuyNow = async () => {
+    if (!isLoggedIn()) {
+      navigate("/login", {
+        state: { redirectTo: "/checkout" }
+      });
+      return;
+    }
+
+    await addToCart(product._id, quantity);
+    navigate("/checkout");
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -33,7 +60,7 @@ const ProductDetails = () => {
               key={idx}
               src={img}
               onClick={() => setSelectedImage(idx)}
-              className={`w-20 h-20 object-cover cursor-pointer border ${
+              className={`w-20 h-20 cursor-pointer border ${
                 selectedImage === idx ? "border-yellow-400" : ""
               }`}
             />
@@ -43,9 +70,7 @@ const ProductDetails = () => {
 
       {/* Info */}
       <div>
-        <h1 className="text-3xl font-bold">
-          {product.name}
-        </h1>
+        <h1 className="text-3xl font-bold">{product.name}</h1>
 
         <p className="text-2xl font-bold text-green-600 mt-2">
           ₹{product.price}
@@ -61,17 +86,17 @@ const ProductDetails = () => {
 
         <div className="flex gap-4 mt-6">
           <button
-            onClick={() => addToCart(product._id, quantity)}
+            onClick={handleAddToCart}
             className="amazon-btn flex-1"
           >
             Add to Cart
           </button>
 
           <button
-            onClick={() => navigate("/cart")}
+            onClick={handleBuyNow}
             className="border px-6 py-2 rounded"
           >
-            View Cart
+            Buy Now
           </button>
         </div>
       </div>

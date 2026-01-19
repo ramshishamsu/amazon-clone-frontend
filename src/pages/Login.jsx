@@ -1,26 +1,28 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
 import { loginApi, googleAuthApi } from "../api/authApi";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ where to go after login (VERY IMPORTANT)
+  const redirectTo = location.state?.redirectTo || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await loginApi({
-        email,
-        password
-      });
+      const res = await loginApi({ email, password });
       login(res.data);
-      navigate("/");
+
+      navigate(redirectTo); // ✅ FIX
     } catch (error) {
       alert(error.message || "Login failed");
     }
@@ -28,8 +30,8 @@ const Login = () => {
 
   const googleLogin = async () => {
     try {
-      // Try Firebase first, fallback to mock if blocked
       let userData;
+
       try {
         const result = await signInWithPopup(auth, googleProvider);
         userData = {
@@ -37,9 +39,8 @@ const Login = () => {
           email: result.user.email,
           googleId: result.user.uid
         };
-      } catch (firebaseError) {
-        // If Firebase fails (popup blocked or COOP issues), use mock data
-        console.log("Firebase popup blocked or COOP error, using mock data");
+      } catch {
+        // fallback (popup blocked)
         userData = {
           name: "Google User",
           email: "user@gmail.com",
@@ -49,16 +50,10 @@ const Login = () => {
 
       const res = await googleAuthApi(userData);
       login(res.data);
-      navigate("/");
+
+      navigate(redirectTo); // ✅ FIX
     } catch (error) {
-      console.error("Google login error:", error);
-      
-      // Check if it's a network/backend error
-      if (error.code === 'ERR_NETWORK' || error.response?.status === 404) {
-        alert("Backend server not available. Please make sure the backend is running on port 5000.");
-      } else {
-        alert("Google login failed. Please try again or use email login.");
-      }
+      alert("Google login failed. Please try again.");
     }
   };
 
@@ -90,10 +85,7 @@ const Login = () => {
           required
         />
 
-        <button
-          type="submit"
-          className="amazon-btn w-full mb-3"
-        >
+        <button type="submit" className="amazon-btn w-full mb-3">
           Sign In
         </button>
 
@@ -109,7 +101,7 @@ const Login = () => {
         <button
           type="button"
           onClick={googleLogin}
-          className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mb-3"
+          className="w-full bg-red-500 text-white px-4 py-2 rounded mb-3"
         >
           Sign in with Google
         </button>
