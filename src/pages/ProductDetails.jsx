@@ -94,7 +94,7 @@ const ProductDetails = () => {
 
           <button
             onClick={handleBuyNow}
-            className="border px-6 py-2 rounded"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded font-semibold transition-colors"
           >
             Buy Now
           </button>
